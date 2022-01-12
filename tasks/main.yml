@@ -1,0 +1,40 @@
+---
+- name: Install libvirt packages
+  ansible.builtin.apt:
+    name: "{{ libvirt_packages }}"
+    state: present
+
+- name: Install virt-manager packages
+  ansible.builtin.apt:
+    name: "{{ libvirt_virtmanager_packages }}"
+    state: present
+  when: libvirt_install_virtmanager | bool
+
+- when:
+    - bearwall2_interfaces is defined
+    - bearwall2_interfaces | length > 0
+  block:
+    - name: Add libvirtd service overrides directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/libvirtd.service.d
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+
+    - name: Add systemd config to start libvirtd before bearwall2
+      ansible.builtin.template:
+        src: service-overrides.conf
+        dest: /etc/systemd/system/libvirtd.service.d/service-overrides.conf
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      notify: systemd daemon-reload
+
+- name: Start and enable libvirtd
+  ansible.builtin.systemd:
+    name: libvirtd
+    daemon_reload: yes
+    masked: no
+    enabled: yes
+    state: started
