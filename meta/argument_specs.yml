@@ -1,0 +1,30 @@
+---
+argument_specs:
+  main:
+    short_description: Install libvirt
+    description: |
+      Install libvirt and other relevant packages to enable virtualization
+      on the host, for creating virtual machines and virtual networks.
+      Optionally, install virtmanager for a GUI to interact with libvirt.
+    options:
+      libvirt_packages:
+        description: List of packages to install
+        type: list
+        elements: str
+        default:
+          - qemu-kvm
+          - libvirt-daemon-system
+          - libvirt-clients
+          - bridge-utils
+
+      libvirt_install_virtmanager:
+        description: If true, install virtmanager
+        type: bool
+        default: false
+
+      libvirt_virtmanager_packages:
+        description: List of packages for virtmanager
+        type: list
+        elements: str
+        default:
+          - virt-manager
