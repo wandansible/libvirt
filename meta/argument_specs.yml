@@ -12,7 +12,7 @@ argument_specs:
         type: list
         elements: str
         default:
-          - qemu-kvm
+          - qemu-system-x86
           - libvirt-daemon-system
           - libvirt-clients
           - bridge-utils

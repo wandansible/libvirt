@@ -23,7 +23,7 @@ Options (= indicates it is required):
           type: bool
 
 - libvirt_packages  List of packages to install
-          default: [qemu-kvm, libvirt-daemon-system, libvirt-clients, bridge-utils]
+          default: [qemu-system-x86, libvirt-daemon-system, libvirt-clients, bridge-utils]
           elements: str
           type: list
 
